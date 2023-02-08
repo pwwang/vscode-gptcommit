@@ -34,6 +34,12 @@ Run via `Ctrl+Shift+P` or `Cmd+Shift+P`:
   - `unstaged`: Use unstaged files
   - `tryStagedThenUnstaged`: Try staged files first, then try unstaged files if no staged files are found
 
+## Advanced configuration
+
+The configuration is saved at `~/.config/gptcommit/config.json`. You can edit it manually, but it's recommended to use commands inside VS Code to edit the configuration, unless you know what you are doing.
+
+Also refer to the [gptcommit][1] documentation for more information.
+
 [1]: https://github.com/zurawiki/gptcommit
 [2]: https://raw.githubusercontent.com/pwwang/vscode-gptcommit/master/vscode-gptcommit.gif
 [3]: https://openai.com/api/
