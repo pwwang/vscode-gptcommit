@@ -6,7 +6,7 @@ Automated git commit messages using GPT models via [gptcommit][1]
 
 ## Installation
 
-- Install the extension from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=pwwang.vscode-gptcommit)
+- Install the extension from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=pwwang.gptcommit)
 - Install the [gptcommit][1]
 
 Note: Do NOT install `gptcommit` hook via `gptcommit install` under the root of your git repo.
