@@ -1,6 +1,6 @@
 # vscode-gptcommit
 
-Automated git commit messages using GPT models via [gptcommit][1]
+Automated git commit messages using GPT models via [gptcommit][1] for VS Code.
 
 ![vscode-gptcommit][2]
 
