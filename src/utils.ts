@@ -11,7 +11,12 @@ export function getGitExtension() {
     return gitExtension && gitExtension.getAPI(1);
 }
 
-export async function getCommitMessage(config: vscode.WorkspaceConfiguration, repo: Repository, context: vscode.ExtensionContext) {
+export async function getCommitMessage(
+    config: vscode.WorkspaceConfiguration,
+    repo: Repository,
+    context: vscode.ExtensionContext,
+    channel: vscode.OutputChannel
+) {
 	const gptcommit = config.gptcommitPath || "gptcommit";
 	const uid = randomUUID();
 	const tmpMsgFile = `${tmpdir()}/vscode-gptcommit-${uid}.txt`;
@@ -36,10 +41,14 @@ export async function getCommitMessage(config: vscode.WorkspaceConfiguration, re
         }
         writeFileSync(tmpDiffFile, diff);
         const cmd = `${gptcommit} prepare-commit-msg --commit-msg-file ${tmpMsgFile} --commit-source commit --git-diff-content ${tmpDiffFile}`;
+        channel.appendLine(`COMMAND: ${cmd}`);
         return new Promise<string>((resolve, reject) => {
             exec(cmd, {
                 cwd: repo.rootUri.path
             }, (err, stdout, stderr) => {
+                channel.appendLine(`STDOUT: ${stdout}`);
+                channel.appendLine(`STDERR: ${stderr}`);
+                channel.show();
                 try { unlinkSync(tmpDiffFile); } catch (e) {}
                 if (err) {
                     try { unlinkSync(tmpMsgFile); } catch (e) {}
@@ -47,9 +56,10 @@ export async function getCommitMessage(config: vscode.WorkspaceConfiguration, re
                 } else if (/is being amended/.test(stdout)) {
                     // set allow-amend to true
                     const cmd = `${gptcommit} config set allow_amend true`;
+                    channel.appendLine(`COMMAND: ${cmd}`);
                     execSync(cmd, {cwd: repo.rootUri.path});
                     // try again
-                    getCommitMessage(config, repo, context).then((msg) => {
+                    getCommitMessage(config, repo, context, channel).then((msg) => {
                         resolve(msg);
                     }).catch((err) => {
                         reject(err);

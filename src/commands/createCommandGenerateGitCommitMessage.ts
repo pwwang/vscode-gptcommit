@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import { getGitExtension, getCommitMessage } from '../utils';
 import { Repository } from '../@types/git';
 
-export default (context: vscode.ExtensionContext) => {
+export default (context: vscode.ExtensionContext, channel: vscode.OutputChannel) => {
     let command1 = vscode.commands.registerCommand(
         'gptcommit.generateGitCommitMessage',
         async (uri?: vscode.SourceControl) => {
@@ -35,7 +35,7 @@ export default (context: vscode.ExtensionContext) => {
                 return;
             }
 
-            getCommitMessage(config, repo, context).then((message) => {
+            getCommitMessage(config, repo, context, channel).then((message) => {
                 if (repo) {
                     repo.inputBox.value = message;
                 }
