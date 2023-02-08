@@ -48,11 +48,12 @@ export async function getCommitMessage(
             }, (err, stdout, stderr) => {
                 channel.appendLine(`STDOUT: ${stdout}`);
                 channel.appendLine(`STDERR: ${stderr}`);
-                channel.show();
                 try { unlinkSync(tmpDiffFile); } catch (e) {}
-                if (err) {
-                    try { unlinkSync(tmpMsgFile); } catch (e) {}
-                    reject(err);
+
+                if (/: not found\s*$/.test(stderr)) {
+                    reject('gptcommit not found, see https://github.com/zurawiki/gptcommit. If it is not in your PATH, set "gptcommit.gptcommitPath" in your settings to the path to gptcommit');
+                } else if (/OpenAI API key not found/.test(stderr)) {
+                    reject('OpenAI API key not found, run "gptcommit.setupOpenAIApiKey" command to set it up');
                 } else if (/is being amended/.test(stdout)) {
                     // set allow-amend to true
                     const cmd = `${gptcommit} config set allow_amend true`;
@@ -64,8 +65,9 @@ export async function getCommitMessage(
                     }).catch((err) => {
                         reject(err);
                     });
-                } else if (/OpenAI API key not found/.test(stdout)) {
-                    reject('OpenAI API key not found, run "gptcommit.setupOpenAIApiKey" command to set it up');
+                } else if (err || stderr) {
+                    try { unlinkSync(tmpMsgFile); } catch (e) {}
+                    reject(err || stderr);
                 } else if (!existsSync(tmpMsgFile)) {
                     reject('Failed to generate commit message');
                 } else if (config.expressMode) {
