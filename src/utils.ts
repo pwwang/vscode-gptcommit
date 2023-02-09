@@ -1,10 +1,10 @@
 import * as vscode from 'vscode';
+import * as path from 'path';
 import { randomUUID } from 'crypto';
 import { tmpdir } from 'os';
 import { existsSync, readFileSync, unlinkSync, writeFileSync } from 'fs';
 import { exec, execSync } from 'child_process';
 import { GitExtension, Repository } from './@types/git';
-import * as path from 'path'
 
 export function getGitExtension() {
     const vscodeGit = vscode.extensions.getExtension<GitExtension>('vscode.git');
