@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import * as path from 'path';
 import { randomUUID } from 'crypto';
 import { tmpdir } from 'os';
 import { existsSync, readFileSync, unlinkSync, writeFileSync } from 'fs';
@@ -19,8 +20,8 @@ export async function getCommitMessage(
 ) {
 	const gptcommit = config.gptcommitPath || "gptcommit";
 	const uid = randomUUID();
-	const tmpMsgFile = `${tmpdir()}/vscode-gptcommit-${uid}.txt`;
-	const tmpDiffFile = `${tmpdir()}/vscode-gptcommit-${uid}.diff`;
+	const tmpMsgFile = path.join(tmpdir(), `vscode-gptcommit-${uid}.txt`);
+	const tmpDiffFile = path.join(tmpdir(), `vscode-gptcommit-${uid}.diff`);
 	const onFiles = config.onFiles || 'tryStagedThenUnstaged';
 
     return vscode.window.withProgress({
@@ -44,7 +45,7 @@ export async function getCommitMessage(
         channel.appendLine(`COMMAND: ${cmd}`);
         return new Promise<string>((resolve, reject) => {
             exec(cmd, {
-                cwd: repo.rootUri.path
+                cwd: repo.rootUri.fsPath
             }, (err, stdout, stderr) => {
                 channel.appendLine(`STDOUT: ${stdout}`);
                 channel.appendLine(`STDERR: ${stderr}`);
@@ -58,7 +59,7 @@ export async function getCommitMessage(
                     // set allow-amend to true
                     const cmd = `${gptcommit} config set allow_amend true`;
                     channel.appendLine(`COMMAND: ${cmd}`);
-                    execSync(cmd, {cwd: repo.rootUri.path});
+                    execSync(cmd, {cwd: repo.rootUri.fsPath});
                     // try again
                     getCommitMessage(config, repo, context, channel).then((msg) => {
                         resolve(msg);
