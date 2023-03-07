@@ -7,7 +7,7 @@
     "url": "https://github.com/pwwang/vscode-gptcommit"
   },
   "engines": {
-    "vscode": "^1.75.0"
+    "vscode": "^1.70.0"
   },
   "publisher": "pwwang",
   "categories": [
@@ -21,7 +21,9 @@
   ],
   "icon": "icon.png",
   "activationEvents": [
-
+    "onCommand:gptcommit.generateGitCommitMessage",
+    "onCommand:gptcommit.setupOpenAIApiKey",
+    "onCommand:gptcommit.tryDifferentOpenAIModel"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -29,7 +31,7 @@
       {
         "command": "gptcommit.generateGitCommitMessage",
         "title": "GPTCommit: Generate Git Commit Message",
-        "icon": "$(comment-draft)"
+        "icon": "$(output)"
       },
       {
         "command": "gptcommit.setupOpenAIApiKey",
@@ -106,7 +108,7 @@
     "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {
-    "@types/vscode": "^1.75.0",
+    "@types/vscode": "^1.70.0",
     "@types/glob": "^8.0.1",
     "@types/mocha": "^10.0.1",
     "@types/node": "16.x",
