@@ -11,6 +11,14 @@ Automated git commit messages using GPT models via [gptcommit][1] for VS Code.
 
 Note: Do NOT install `gptcommit` hook via `gptcommit install` under the root of your git repo.
 
+## Supported Versions
+
+| Extension Version | VS Code Version | gptcommit Version |
+| ----------------- | --------------- | ----------------- |
+| < 0.1.0 | 1.75+ | 0.1.16 |
+| 0.1.x | 1.70+ | 0.1.16 |
+| 0.2.0 | 1.70+ | 0.3.0 |
+
 ## Commands
 
 Run via `Ctrl+Shift+P` or `Cmd+Shift+P`:
@@ -21,8 +29,11 @@ Run via `Ctrl+Shift+P` or `Cmd+Shift+P`:
 - `GPTCommit: Setup OpenAI API Key`
   Setup the OpenAI API Key. You can get the API key from [OpenAI][3]
 
-- `GPTCommit: Try a different OpenAI model`
-  Try a different OpenAI model. For a list of public OpenAI models, checkout the [OpenAI docs][4].
+- `GPTCommit: Use a different OpenAI model`
+  Use a different OpenAI model. For a list of public OpenAI models, checkout the [OpenAI docs][4]. Default is now `gpt-3.5-turbo`.
+
+- `GPTCommit: Set output language`
+  Set the output language. Default is `en`.
 
 ## Extension Settings
 
@@ -36,7 +47,9 @@ Run via `Ctrl+Shift+P` or `Cmd+Shift+P`:
 
 ## Advanced configuration
 
-The configuration is saved at `~/.config/gptcommit/config.json`. You can edit it manually, but it's recommended to use commands inside VS Code to edit the configuration, unless you know what you are doing.
+Note that now all the configuration via the extension is saved in the `.git/gptcommit.toml` file. If you have to change advanced configuration, you can edit the `.git/gptcommit.toml` file directly, but make sure you know what you are doing.
+
+If you want to use the configuration globally, you can copy the `.git/gptcommit.toml` file to `~/.config/gptcommit/config.toml`, or just the sections of the configuration you want to be used globally.
 
 Also refer to the [gptcommit][1] documentation for more information.
 

@@ -2,7 +2,7 @@
   "name": "gptcommit",
   "displayName": "vscode-gptcommit",
   "description": "Automated git commit messages using GPT models",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "repository": {
     "url": "https://github.com/pwwang/vscode-gptcommit"
   },
@@ -44,7 +44,7 @@
       },
       {
         "command": "gptcommit.setOutputLanguage",
-        "title": "GPTCommit: Set output language (default: en)"
+        "title": "GPTCommit: Set output language"
       }
     ],
     "menus": {
