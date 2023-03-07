@@ -23,7 +23,8 @@
   "activationEvents": [
     "onCommand:gptcommit.generateGitCommitMessage",
     "onCommand:gptcommit.setupOpenAIApiKey",
-    "onCommand:gptcommit.tryDifferentOpenAIModel"
+    "onCommand:gptcommit.useDifferentModel",
+    "onCommand:gptcommit.setOutputLanguage"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -38,8 +39,12 @@
         "title": "GPTCommit: Setup OpenAI API Key"
       },
       {
-        "command": "gptcommit.tryDifferentOpenAIModel",
-        "title": "GPTCommit: Try a different OpenAI model"
+        "command": "gptcommit.useDifferentModel",
+        "title": "GPTCommit: Use a different OpenAI model"
+      },
+      {
+        "command": "gptcommit.setOutputLanguage",
+        "title": "GPTCommit: Set output language (default: en)"
       }
     ],
     "menus": {
@@ -54,6 +59,11 @@
     "configuration": {
       "title": "GPTCommit",
       "properties": {
+          "gptcommit.gptcommitPath": {
+              "type": "string",
+              "default": "",
+              "description": "Path to gptcommit executable."
+          },
           "gptcommit.expressMode": {
               "type": "boolean",
               "default": false,
@@ -61,25 +71,20 @@
           },
           "gptcommit.expressModeContent": {
               "type": "string",
-              "default": "title + body",
+              "default": "title + summary",
               "enum": [
                   "title",
-                  "title + body",
+                  "title + summary",
                   "title + breakdown",
-                  "title + body + breakdown"
+                  "title + summary + breakdown"
               ],
               "enumDescriptions": [
-                  "Only the title of the commit message",
-                  "Title and body of the commit message",
-                  "Title and breakdown of the commit message",
-                  "Title, body and breakdown of the commit message"
+                  "Only the title",
+                  "Title and bullet-point summary",
+                  "Title and breakdown of each changed file",
+                  "Title, bullet-point summary and each changed file"
               ],
               "description": "Content of the message to fill in the express mode."
-          },
-          "gptcommit.gptcommitPath": {
-              "type": "string",
-              "default": "",
-              "description": "Path to gptcommit executable."
           },
           "gptcommit.onFiles": {
               "type": "string",

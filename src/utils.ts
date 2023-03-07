@@ -100,7 +100,7 @@ export async function getCommitMessage(
 export function polishMessage(msg: string, content: string) {
 	const lines = msg.split('\n');
 	let title = lines[0];
-	let body = [];
+	let summary = [];
 	let breakdown = [];
 	let breakdownStarted = false;
 	for (let line of lines.slice(1)) {
@@ -113,7 +113,7 @@ export function polishMessage(msg: string, content: string) {
 		if (breakdownStarted) {
 			breakdown.push(line);
 		} else if (line.startsWith('- ')) {
-			body.push(line);
+			summary.push(line);
 		}
 	}
 	if (/breakdown/.test(content)) {
@@ -122,11 +122,65 @@ export function polishMessage(msg: string, content: string) {
 	if (content === 'title') {
 		return title;
 	}
-	if (content === 'title + body') {
-		return [title, '', ...body].join('\n');
+	if (content === 'title + summary') {
+		return [title, '', ...summary].join('\n');
 	}
 	if (content === 'title + breakdown') {
 		return [title, ...breakdown].join('\n');
 	}
-	return [title, '', ...body, ...breakdown].join('\n');
+	return [title, '', ...summary, ...breakdown].join('\n');
+}
+
+export function getRepo(uri?: vscode.SourceControl): Repository | undefined {
+    const git = getGitExtension();
+
+    if (!git) {
+        vscode.window.showErrorMessage('Git extension not found');
+        return undefined;
+    }
+
+    if (uri) {
+        const uriPath = uri.rootUri?.path;
+        return git.repositories.find(r => r.rootUri.path === uriPath);
+    }
+    if (git.repositories.length === 1) {
+        return git.repositories[0];
+    }
+    if (git.repositories.length > 1) {
+        vscode.window.showWarningMessage('Multiple repositories found, using first one');
+        return git.repositories[0];
+    }
+    vscode.window.showErrorMessage('No repository found');
+    return undefined;
+}
+
+export function saveConfig(
+    key: string,
+    gckey: string,
+    channel: vscode.OutputChannel,
+    repo: Repository | undefined,
+    value: any | undefined = undefined,
+    savedInfo: string | undefined = undefined,
+) {
+    if (repo === undefined) {
+        return;
+    }
+    const gptcommit = vscode.workspace.getConfiguration('gptcommit').gptcommitPath || 'gptcommit';
+    if (value === undefined) {
+        value = vscode.workspace.getConfiguration('gptcommit')[key];
+    }
+    const cmd = `${gptcommit} config set --local ${gckey} ${value}`;
+    exec(cmd, { cwd: repo.rootUri.fsPath }, (err, stdout, stderr) => {
+        if (err) {
+            vscode.window.showErrorMessage(`Failed to save "${key}": ${err}`);
+            channel.appendLine(`COMMAND: ${cmd}`);
+            channel.appendLine(`STDOUT: ${stdout}`);
+            channel.appendLine(`STDERR: ${stderr}`);
+            exec("pwd", (err, stdout, stderr) => {
+                vscode.window.showErrorMessage(`pwd: ${stdout} ${stderr} ${err}`)
+            });
+        } else if (savedInfo !== undefined) {
+            vscode.window.showInformationMessage(savedInfo);
+        }
+    });
 }
