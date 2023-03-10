@@ -12,13 +12,15 @@ export default (context: vscode.ExtensionContext, channel: vscode.OutputChannel)
             }
 
             const config = vscode.workspace.getConfiguration('gptcommit');
-
+            vscode.commands.executeCommand('setContext', 'gptcommit.generating', true);
             getCommitMessage(config, repo, context, channel).then((message) => {
                 if (repo) {
                     repo.inputBox.value = message;
                 }
+                vscode.commands.executeCommand('setContext', 'gptcommit.generating', false);
             }).catch((err) => {
                 vscode.window.showErrorMessage(err);
+                vscode.commands.executeCommand('setContext', 'gptcommit.generating', false);
             });
         }
     );

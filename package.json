@@ -32,7 +32,8 @@
       {
         "command": "gptcommit.generateGitCommitMessage",
         "title": "GPTCommit: Generate Git Commit Message",
-        "icon": "$(output)"
+        "icon": "$(output)",
+        "enablement": "!gptcommit.generating"
       },
       {
         "command": "gptcommit.setupOpenAIApiKey",
