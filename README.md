@@ -17,7 +17,7 @@ Note: Do NOT install `gptcommit` hook via `gptcommit install` under the root of 
 | ----------------- | --------------- | ----------------- |
 | < 0.1.0 | 1.75+ | 0.1.16 |
 | 0.1.x | 1.70+ | 0.1.16 |
-| 0.2.0 | 1.70+ | 0.3.0 |
+| 0.2.x | 1.70+ | 0.3.0 |
 
 ## Commands
 
