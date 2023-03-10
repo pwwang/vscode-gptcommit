@@ -56,10 +56,19 @@ export async function getCommitMessage(
                 try { unlinkSync(tmpDiffFile); } catch (e) {}
 
                 if (/: not found\s*$/.test(stderr)) {
+                    if (config.debug) {
+                        channel.appendLine('DEBUG: gptcommit not found');
+                    }
                     reject('gptcommit not found, see https://github.com/zurawiki/gptcommit. If it is not in your PATH, set "gptcommit.gptcommitPath" in your settings to the path to gptcommit');
                 } else if (/OpenAI API key not found/.test(stderr)) {
+                    if (config.debug) {
+                        channel.appendLine('DEBUG: OpenAI API key not set');
+                    }
                     reject('OpenAI API key not found, run "gptcommit.setupOpenAIApiKey" command to set it up');
                 } else if (/is being amended/.test(stdout)) {
+                    if (config.debug) {
+                        channel.appendLine('DEBUG: allow_amend is false');
+                    }
                     // set allow-amend to true
                     const cmd = `${gptcommit} config set allow_amend true`;
                     channel.appendLine(`COMMAND: ${cmd}`);
@@ -71,15 +80,27 @@ export async function getCommitMessage(
                         reject(err);
                     });
                 } else if (err || stderr) {
+                    if (config.debug) {
+                        channel.appendLine(`DEBUG: gptcommit failed with error: ${err} | ${stderr}`);
+                    }
                     try { unlinkSync(tmpMsgFile); } catch (e) {}
                     reject(err || stderr);
                 } else if (!existsSync(tmpMsgFile)) {
+                    if (config.debug) {
+                        channel.appendLine('DEBUG: gptcommit failed to generate commit message, message file not generated');
+                    }
                     reject('Failed to generate commit message');
                 } else if (config.expressMode) {
+                    if (config.debug) {
+                        channel.appendLine('DEBUG: express mode enabled, skipping editor');
+                    }
                     const msg = readFileSync(tmpMsgFile, 'utf8');
                     try { unlinkSync(tmpMsgFile); } catch (e) {}
                     resolve(polishMessage(msg, config.expressModeContent));
                 } else {
+                    if (config.debug) {
+                        channel.appendLine('DEBUG: opening editor');
+                    }
                     const editor = vscode.window.activeTextEditor;
                     vscode.workspace.openTextDocument(tmpMsgFile).then(async (doc) => {
                         await vscode.window.showTextDocument(doc, {

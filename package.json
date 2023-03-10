@@ -65,6 +65,11 @@
               "default": "",
               "description": "Path to gptcommit executable."
           },
+          "gptcommit.debug": {
+              "type": "boolean",
+              "default": false,
+              "description": "If true, debug information will be shown in the output channel."
+          },
           "gptcommit.expressMode": {
               "type": "boolean",
               "default": false,
