@@ -40,6 +40,10 @@ export async function getCommitMessage(
                 diff = await repo.diff(false);
             }
         }
+        // if diff is empty, return the promise here
+        if (!diff) {
+            return Promise.reject('No changes to commit');
+        }
         writeFileSync(tmpDiffFile, diff);
         const cmd = `${gptcommit} prepare-commit-msg --commit-msg-file ${tmpMsgFile} --commit-source commit --git-diff-content ${tmpDiffFile}`;
         channel.appendLine(`COMMAND: ${cmd}`);
