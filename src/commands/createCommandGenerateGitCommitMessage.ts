@@ -21,6 +21,7 @@ export default (context: vscode.ExtensionContext, channel: vscode.OutputChannel)
             }).catch((err) => {
                 vscode.window.showErrorMessage(err);
                 vscode.commands.executeCommand('setContext', 'gptcommit.generating', false);
+                channel.show();
             });
         }
     );
