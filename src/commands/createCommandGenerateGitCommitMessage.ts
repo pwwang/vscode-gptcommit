@@ -19,9 +19,12 @@ export default (context: vscode.ExtensionContext, channel: vscode.OutputChannel)
                 }
                 vscode.commands.executeCommand('setContext', 'gptcommit.generating', false);
             }).catch((err) => {
-                vscode.window.showErrorMessage(err);
                 vscode.commands.executeCommand('setContext', 'gptcommit.generating', false);
-                channel.show();
+                vscode.window.showErrorMessage(err, "Show Output").then((choice) => {
+                    if (choice === "Show Output") {
+                        channel.show();
+                    }
+                });
             });
         }
     );
