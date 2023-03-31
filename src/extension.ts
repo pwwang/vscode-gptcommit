@@ -2,7 +2,12 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import createCommandGenerateGitCommitMessage from './commands/createCommandGenerateGitCommitMessage';
-import { setupOpenAIApiKey, useDifferentModel, setOutputLanguage } from './commands/createCommandConfigs';
+import {
+	setupOpenAIApiKey,
+	useDifferentModel,
+	setOutputLanguage,
+	showPerFileSummary,
+} from './commands/createCommandConfigs';
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
@@ -22,6 +27,7 @@ export function activate(context: vscode.ExtensionContext) {
 	setupOpenAIApiKey(context, channel);
 	useDifferentModel(context, channel);
 	setOutputLanguage(context, channel);
+	showPerFileSummary(context, channel);
 }
 
 // This method is called when your extension is deactivated

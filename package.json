@@ -46,6 +46,10 @@
       {
         "command": "gptcommit.setOutputLanguage",
         "title": "GPTCommit: Set output language"
+      },
+      {
+        "command": "gptcommit.showPerFileSummary",
+        "title": "GPTCommit: Show per-file summary"
       }
     ],
     "menus": {
@@ -81,16 +85,16 @@
               "enum": [
                   "title",
                   "title + summary",
-                  "title + breakdown",
-                  "title + summary + breakdown"
+                  "title + per-file",
+                  "title + summary + per-file"
               ],
               "enumDescriptions": [
                   "Only the title",
                   "Title and bullet-point summary",
-                  "Title and breakdown of each changed file",
-                  "Title, bullet-point summary and each changed file"
+                  "Title and per-file summary",
+                  "Title, bullet-point summary and per-file summary"
               ],
-              "description": "Content of the message to fill in the express mode."
+              "description": "Content of the message to fill in the express mode. Note that you need enable per-file summary for the per-file content (by GPTCommit: Show per-file summary)."
           },
           "gptcommit.onFiles": {
               "type": "string",
