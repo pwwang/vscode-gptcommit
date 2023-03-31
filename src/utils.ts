@@ -72,13 +72,23 @@ export async function getCommitMessage(
                     // set allow-amend to true
                     const cmd = `${gptcommit} config set --local allow_amend true`;
                     channel.appendLine(`COMMAND: ${cmd}`);
-                    execSync(cmd, {cwd: repo.rootUri.fsPath});
-                    // try again
-                    getCommitMessage(config, repo, context, channel).then((msg) => {
-                        resolve(msg);
-                    }).catch((err) => {
-                        reject(err);
-                    });
+                    let setAmendSuccess = true;
+                    try {
+                        const setAmendOut = execSync(cmd, {cwd: repo.rootUri.fsPath}).toString();
+                        channel.appendLine(`STDOUT: ${setAmendOut}`);
+                    } catch (error) {
+                        setAmendSuccess = false;
+                        channel.appendLine(`ERROR: ${error}`);
+                        reject("Failed to set allow_amend to true");
+                    }
+                    if (setAmendSuccess) {
+                        // try again
+                        getCommitMessage(config, repo, context, channel).then((msg) => {
+                            resolve(msg);
+                        }).catch((err) => {
+                            reject(err);
+                        });
+                    }
                 } else if (err || stderr) {
                     if (config.debug) {
                         channel.appendLine(`DEBUG: gptcommit failed with error: ${err} | ${stderr}`);
