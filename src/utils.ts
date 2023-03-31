@@ -70,7 +70,7 @@ export async function getCommitMessage(
                         channel.appendLine('DEBUG: allow_amend is false');
                     }
                     // set allow-amend to true
-                    const cmd = `${gptcommit} config set allow_amend true`;
+                    const cmd = `${gptcommit} config set --local allow_amend true`;
                     channel.appendLine(`COMMAND: ${cmd}`);
                     execSync(cmd, {cwd: repo.rootUri.fsPath});
                     // try again
