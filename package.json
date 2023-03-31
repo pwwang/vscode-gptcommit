@@ -50,6 +50,10 @@
       {
         "command": "gptcommit.showPerFileSummary",
         "title": "GPTCommit: Show per-file summary"
+      },
+      {
+        "command": "gptcommit.disableConventionalCommit",
+        "title": "GPTCommit: Disable conventional commit"
       }
     ],
     "menus": {

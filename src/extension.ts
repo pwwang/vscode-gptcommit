@@ -7,6 +7,7 @@ import {
 	useDifferentModel,
 	setOutputLanguage,
 	showPerFileSummary,
+	disableConventionalCommit,
 } from './commands/createCommandConfigs';
 
 // This method is called when your extension is activated
@@ -28,6 +29,7 @@ export function activate(context: vscode.ExtensionContext) {
 	useDifferentModel(context, channel);
 	setOutputLanguage(context, channel);
 	showPerFileSummary(context, channel);
+	disableConventionalCommit(context, channel);
 }
 
 // This method is called when your extension is deactivated

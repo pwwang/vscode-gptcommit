@@ -15,7 +15,7 @@ export function setupOpenAIApiKey(context: vscode.ExtensionContext, channel: vsc
                     channel,
                     getRepo(uri),
                     key,
-                    'OpenAI API key saved'
+                    'Configuration openai.api_key saved'
                 );
             }
         });
@@ -38,7 +38,7 @@ export function useDifferentModel(context: vscode.ExtensionContext, channel: vsc
                     channel,
                     getRepo(uri),
                     model,
-                    'Model saved'
+                    'Configuration openai.model saved'
                 );
             }
         });
@@ -61,7 +61,7 @@ export function setOutputLanguage(context: vscode.ExtensionContext, channel: vsc
                     channel,
                     getRepo(uri),
                     lang,
-                    'Output language saved'
+                    'Configuration output.lang saved'
                 );
             }
         });
@@ -76,7 +76,6 @@ export function showPerFileSummary(context: vscode.ExtensionContext, channel: vs
             ["Yes", "No"],
             {
                 placeHolder: 'Enable "show per-file summary"?',
-                ignoreFocusOut: true,
             }
         ).then((show) => {
             if (show === "Yes" || show === "No") {
@@ -86,11 +85,35 @@ export function showPerFileSummary(context: vscode.ExtensionContext, channel: vs
                     channel,
                     getRepo(uri),
                     show === "Yes" ? "true" : "false",
-                    'Configuration show per-file summary saved'
+                    'Configuration output.show_per_file_summary saved'
                 );
             }
         });
     });
 
     context.subscriptions.push(showPerFileCommand);
+}
+
+export function disableConventionalCommit(context: vscode.ExtensionContext, channel: vscode.OutputChannel) {
+    let disableConvCommitCommand = vscode.commands.registerCommand('gptcommit.disableConventionalCommit', async (uri?: vscode.SourceControl) => {
+        vscode.window.showQuickPick(
+            ["Yes", "No"],
+            {
+                placeHolder: 'Disable conventional commit?',
+            }
+        ).then((show) => {
+            if (show === "Yes" || show === "No") {
+                saveConfig(
+                    'output.conventional_commit',
+                    'output.conventional_commit',
+                    channel,
+                    getRepo(uri),
+                    show === "Yes" ? "false" : "true",
+                    'Configuration output.conventional_commit saved'
+                );
+            }
+        });
+    });
+
+    context.subscriptions.push(disableConvCommitCommand);
 }
