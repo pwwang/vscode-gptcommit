@@ -54,6 +54,10 @@
       {
         "command": "gptcommit.disableConventionalCommit",
         "title": "GPTCommit: Disable conventional commit"
+      },
+      {
+        "command": "gptcommit.openConfigFile",
+        "title": "GPTCommit: Open gptcommit configuration file"
       }
     ],
     "menus": {

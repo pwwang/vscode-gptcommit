@@ -17,14 +17,14 @@ export default (context: vscode.ExtensionContext, channel: vscode.OutputChannel)
                 if (repo) {
                     repo.inputBox.value = message;
                 }
-                vscode.commands.executeCommand('setContext', 'gptcommit.generating', false);
             }).catch((err) => {
-                vscode.commands.executeCommand('setContext', 'gptcommit.generating', false);
                 vscode.window.showErrorMessage(err, "Show Output").then((choice) => {
                     if (choice === "Show Output") {
                         channel.show();
                     }
                 });
+            }).finally(() => {
+                vscode.commands.executeCommand('setContext', 'gptcommit.generating', false);
             });
         }
     );

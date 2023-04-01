@@ -118,6 +118,7 @@ export async function getCommitMessage(
                             viewColumn: editor ? editor.viewColumn : undefined,
                         });
                         progress.report({ increment: 100 });
+                        vscode.commands.executeCommand('setContext', 'gptcommit.generating', false);
                     });
 
                     let disposable = vscode.workspace.onDidSaveTextDocument(async (doc) => {

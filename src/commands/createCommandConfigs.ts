@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import * as path from 'path';
 import { getRepo, saveConfig  } from '../utils';
 
 export function setupOpenAIApiKey(context: vscode.ExtensionContext, channel: vscode.OutputChannel) {
@@ -116,4 +117,22 @@ export function disableConventionalCommit(context: vscode.ExtensionContext, chan
     });
 
     context.subscriptions.push(disableConvCommitCommand);
+}
+
+export function openConfigFile(context: vscode.ExtensionContext, channel: vscode.OutputChannel) {
+    let openConfigFileCommand = vscode.commands.registerCommand('gptcommit.openConfigFile', async (uri?: vscode.SourceControl) => {
+        const repo = getRepo(uri);
+        if (!repo) {
+            return;
+        }
+        channel.appendLine(`Opening ${path.join(repo.rootUri.fsPath, ".git", "gptcommit.toml")}`);
+        const editor = vscode.window.activeTextEditor;
+        const doc = await vscode.workspace.openTextDocument(path.join(repo.rootUri.fsPath, ".git", "gptcommit.toml"));
+        await vscode.window.showTextDocument(doc, {
+            preview: false,
+            viewColumn: editor ? editor.viewColumn : undefined,
+        });
+    });
+
+    context.subscriptions.push(openConfigFileCommand);
 }
