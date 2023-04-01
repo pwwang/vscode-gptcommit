@@ -2,7 +2,7 @@
   "name": "gptcommit",
   "displayName": "vscode-gptcommit",
   "description": "Automated git commit messages using GPT models",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "repository": {
     "url": "https://github.com/pwwang/vscode-gptcommit"
   },

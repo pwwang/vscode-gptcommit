@@ -18,6 +18,7 @@ Note: Do NOT install `gptcommit` hook via `gptcommit install` under the root of 
 | < 0.1.0 | 1.75+ | 0.1.16 |
 | 0.1.x | 1.70+ | 0.1.16 |
 | 0.2.x | 1.70+ | 0.3.0 |
+| 0.3.x | 1.70+ | 0.5.x |
 
 ## Commands
 
@@ -35,10 +36,20 @@ Run via `Ctrl+Shift+P` or `Cmd+Shift+P`:
 - `GPTCommit: Set output language`
   Set the output language. Default is `en`.
 
+- `GPTCommit: Show per-file summary`
+  Enable "show per-file summary"? It's disabled by default.
+
+- `GPTCommit: Disable conventional commit`
+  Disable "conventional commit"? It's enabled by default.
+
+- `GPTCommit: Open gptcommit configuration file`
+  Open the local gptcommit configuration file (~/.git/gptcommit.toml)
+
 ## Extension Settings
 
 - `ExpressMode`: If true, generated message will be filled into the Source Control commit message input box directly, instead of opening a new editor.
 - `ExpressModeContent`: Content of the message to fill in the express mode.
+  - Note that to show per-file summary, you need to enable "show per-file summary" by running the `GPTCommit: Show per-file summary` command.
 - `GptcommitPath`: Path to the `gptcommit` executable.
 - `OnFiles`: Diff of files to use for generating the commit message.
   - `staged`: Use staged files
@@ -47,7 +58,7 @@ Run via `Ctrl+Shift+P` or `Cmd+Shift+P`:
 
 ## Advanced configuration
 
-Note that now all the configuration via the extension is saved in the `.git/gptcommit.toml` file. If you have to change advanced configuration, you can edit the `.git/gptcommit.toml` file directly, but make sure you know what you are doing.
+Note that now all the configuration via the extension is saved in the `.git/gptcommit.toml` file. If you have to change advanced configuration, you can edit the `.git/gptcommit.toml` file directly, but make sure you know what you are doing. You can also use the `GPTCommit: Open gptcommit configuration file` command to open the configuration file.
 
 If you want to use the configuration globally, you can copy the `.git/gptcommit.toml` file to `~/.config/gptcommit/config.toml`, or just the sections of the configuration you want to be used globally.
 
